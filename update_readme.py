@@ -6,6 +6,11 @@ from datetime import datetime
 USERNAME = os.getenv("GH_USERNAME")
 TOKEN = os.getenv("GH_TOKEN")
 
+if not USERNAME:
+    raise EnvironmentError("Please set the GH_USERNAME environment variable.")
+if not TOKEN
+    raise EnvironmentError("Please set the GH_TOKEN environment variable.")
+
 PROFILE_REPO = USERNAME + "/" + USERNAME
 README_FILE = "profile-repo/README.md"
 
