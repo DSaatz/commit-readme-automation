@@ -8,7 +8,7 @@ TOKEN = os.getenv("GH_TOKEN")
 
 if not USERNAME:
     raise EnvironmentError("Please set the GH_USERNAME environment variable.")
-if not TOKEN
+if not TOKEN:
     raise EnvironmentError("Please set the GH_TOKEN environment variable.")
 
 PROFILE_REPO = USERNAME + "/" + USERNAME
@@ -17,14 +17,6 @@ README_FILE = "profile-repo/README.md"
 EVENTS_API = f"https://api.github.com/users/{USERNAME}/events/public"
 START_MARKER = "<!--RECENT_ACTIVITY_START-->"
 END_MARKER = "<!--RECENT_ACTIVITY_END-->"
-
-RESET = "\033[0m"
-GREEN = "\033[92m"
-CYAN = "\033[96m"
-YELLOW = "\033[93m"
-WHITE = "\033[97m"
-BLUE = "\033[94m"
-GREY = "\033[90m"
 
 def fetch_recent_commits():
     headers = {"Authorization": f"token {TOKEN}"}
