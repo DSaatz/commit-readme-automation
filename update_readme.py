@@ -6,7 +6,7 @@ from datetime import datetime
 USERNAME = os.getenv("GH_USERNAME")
 TOKEN = os.getenv("GH_TOKEN")
 
-PROFILE_REPO = "DSaatz/DSaatz"
+PROFILE_REPO = USERNAME + "/" + USERNAME
 README_FILE = "profile-repo/README.md"
 
 EVENTS_API = f"https://api.github.com/users/{USERNAME}/events/public"
