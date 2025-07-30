@@ -3,7 +3,7 @@ import os
 import re
 from datetime import datetime
 
-USERNAME = "DSaatz"
+USERNAME = os.getenv("GH_USERNAME")
 TOKEN = os.getenv("GH_TOKEN")
 
 PROFILE_REPO = "DSaatz/DSaatz"
@@ -35,29 +35,21 @@ def fetch_recent_commits():
             for commit in event["payload"]["commits"]:
                 commit_id = commit["sha"][:7]
                 commit_msg = commit["message"]
-                formatted = (
-                    f"{GREEN}[{repo_name}]{RESET} "
-                    f"{CYAN}<{branch}>{RESET} "
-                    f"{YELLOW}`{commit_id}`{RESET} "
-                    f"{WHITE}{commit_msg}{RESET}"
-                )
+                formatted = f"[{repo_name}] <{branch}> `{commit_id}` {commit_msg}"
                 activities.append(formatted)
                 if len(activities) == 3:
                     return activities
     return activities
 
 def format_terminal_block(lines):
-    plain_lines = [re.sub(r"\033\[[0-9;]*m", "", line) for line in lines]
-    content_width = max(len(line) for line in plain_lines)
+    content_width = max(len(line) for line in lines)
 
     top = "┌" + "─" * (content_width + 2) + "┐"
-
-    
     header_text = " Recent GitHub Activities "
-    header = "│" + BLUE + header_text.ljust(content_width + 2) + RESET + "│"
+    header = "│" + header_text.ljust(content_width + 2) + "│"
 
     timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
-    timestamp_line = "│" + GREY + f" Last updated: {timestamp}".ljust(content_width + 2) + RESET + "│"
+    timestamp_line = "│" + f" Last updated: {timestamp}".ljust(content_width + 2) + "│"
 
     separator = "├" + "─" * (content_width + 2) + "┤"
 
@@ -69,7 +61,7 @@ def format_terminal_block(lines):
 
 def update_readme(activities):
     terminal_block = format_terminal_block(activities)
-    new_section = f"{START_MARKER}\n```ansi\n{terminal_block}\n```\n{END_MARKER}"
+    new_section = f"{START_MARKER}\n```text\n{terminal_block}\n```\n{END_MARKER}"
 
     with open(README_FILE, "r", encoding="utf-8") as f:
         content = f.read()
