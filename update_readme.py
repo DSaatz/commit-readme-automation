@@ -27,9 +27,17 @@ def fetch_recent_commits():
     activities = []
     for event in events:
         if event["type"] == "PushEvent":
+            # Skip pushes made by GitHub Actions bot or the same username
+            if event["actor"]["login"] in ("github-actions[bot]", USERNAME):
+                continue
+
             repo_name = event["repo"]["name"]
             branch = event["payload"]["ref"].split("/")[-1]
             for commit in event["payload"]["commits"]:
+                # Extra safeguard: skip individual commits by the automation user
+                if commit.get("author", {}).get("name") in ("github-actions[bot]", USERNAME):
+                    continue
+
                 commit_id = commit["sha"][:7]
                 commit_msg = commit["message"]
                 formatted = f"[{repo_name}] <{branch}> `{commit_id}` {commit_msg}"
